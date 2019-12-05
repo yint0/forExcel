@@ -16,7 +16,7 @@ wbnew = load_workbook("new.xlsx")
 wsnew = wbnew.active
 
 # 遍历I列
-for i in range(2, 3):  # 9708
+for i in range(2, 9708):  # 9708
     a = wssrc.cell(i, 9).value
     if a[0] == "G":
         xulie = 9
@@ -24,10 +24,10 @@ for i in range(2, 3):  # 9708
         xulie = 10
     # 检索是否已存在
     dstlen = wsdst.max_row + 1
+    newlen = wsnew.max_row + 1
     nexist1 = True
     for j in range(2, dstlen):
         if a == wsdst.cell(j, xulie).value:
-            print(j)
             nexist1 = False
             break
     # 检查是否已有，未有则继续遍历
@@ -35,14 +35,13 @@ for i in range(2, 3):  # 9708
         nexist2 = True
         for k in range(2, 1637):
             if a == wscheck.cell(k, xulie).value:
-                print(k)
                 for len1 in range(1, 25):
-                    wsdst.cell(dstlen, len1).value = wscheck.cell(wscheck.max_row + 1, len1).value
-                    nexist2 = False
+                    wsdst.cell(dstlen, len1, value=wscheck.cell(k, len1).value)
+                nexist2 = False
                 break
         if nexist2:
             for len2 in range(1, 25):
-                wsnew.cell(dstlen, len2).value = wscheck.cell(wscheck.max_row + 1, len2).value
+                wsnew.cell(newlen, len2, value=wssrc.cell(i, len2).value)
 wbnew.save("newnew.xlsx")
 wbdst.save("newdst.xlsx")
 
